@@ -1,0 +1,201 @@
+/* Hide the scrollbars */
+html, body {
+    overflow: hidden; /* Hide both horizontal and vertical scrollbars */
+    height: 100%; /* Ensure full height for the body */
+  }
+  
+  /* Main container */
+  .view-site-container {
+    padding: 40px;
+    background-color: #2e3b4e; /* Darker background for better contrast */
+    color: white; /* White text for better contrast */
+    min-height: 100vh;
+    font-family: 'Arial', sans-serif; /* Clear, readable font */
+  }
+  
+  /* Title and Site Name */
+  .view-site-title {
+    font-size: 36px; /* Increased font size for visibility */
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    color: #f1f1f1;
+  }
+  
+  h4 {
+    font-size: 26px; /* Increased size for better readability */
+    margin-bottom: 20px;
+    text-align: center;
+    color: #d1d1d1;
+    font-weight: 500;
+  }
+  
+  /* Devices Grid */
+  .device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Increased min-width for cards */
+    gap: 30px;
+    margin-top: 40px;
+  }
+  
+  /* Device Cards */
+  .device-card {
+    border: 1px solid #3c4e68; /* Dark border for contrast */
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #354150; /* Darker card background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 20px; /* Increased font size */
+  }
+  
+  .device-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Device Header */
+  .device-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .device-header h3 {
+    font-size: 24px; /* Larger heading for better visibility */
+    color: #f1f1f1;
+  }
+  
+  .status-indicator {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 18px; /* Larger font size for status */
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .status-indicator.online {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .status-indicator.offline {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  /* Device Info */
+  .device-info {
+    margin-top: 20px;
+  }
+  
+  .device-info p {
+    margin: 12px 0;
+    font-size: 18px;
+    color: #d1d1d1;
+  }
+  
+  .device-info strong {
+    color: #f1f1f1;
+  }
+  
+  /* Add Device Button */
+  .btn-add-device {
+    display: block;
+    margin: 30px auto;
+    padding: 15px 25px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px; /* Larger font size */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .btn-add-device:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Add Device Form */
+  .add-device-form {
+    margin: 40px 0;
+    padding: 30px;
+    border: 1px solid #3c4e68;
+    border-radius: 12px;
+    background: #354150;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .add-device-form h3 {
+    margin-bottom: 25px;
+    font-size: 28px; /* Increased font size for header */
+    color: #f1f1f1;
+  }
+  
+  .add-device-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #d1d1d1;
+  }
+  
+  .add-device-form input,
+  .add-device-form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #3c4e68;
+    border-radius: 8px;
+    font-size: 18px;
+    background-color: #3b4e68;
+    color: white;
+  }
+  
+  .add-device-form input:focus,
+  .add-device-form select:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #2e3b4e;
+  }
+  
+  .add-device-form .btn-submit {
+    padding: 15px 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .add-device-form .btn-submit:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+  
+  /* No Devices Message */
+  .no-devices-message {
+    font-size: 20px;
+    text-align: center;
+    color: #f1f1f1;
+    margin-top: 40px;
+  }
+  
+  /* Global Styles */
+  body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+  }
+  
+  p {
+    line-height: 1.8;
+  }
+  

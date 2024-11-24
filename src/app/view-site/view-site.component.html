@@ -1,0 +1,48 @@
+<div class="view-site-container">
+  <div class="header">
+    <p class="view-site-title">Production Monitoring Display</p>
+    <h4 class="site-name">{{ siteDetails.name }}</h4>
+    <button class="btn-add-device" (click)="toggleAddDeviceForm()">
+      {{ isAddDeviceFormVisible ? 'Cancel' : '+ Add New Device' }}
+    </button>
+  </div>
+
+  <!-- Devices Grid -->
+  <div *ngIf="devices.length > 0; else noDevices" class="device-grid">
+    <div class="device-card" *ngFor="let device of devices">
+      <div class="device-header">
+        <h3>{{ device.device_name }}</h3>
+        <span class="status-indicator" [class.online]="device.status === 'online'" [class.offline]="device.status === 'offline'">
+          {{ device.status }}
+        </span>
+      </div>
+      <div class="device-info">
+        <p><strong>Current Part:</strong> {{allDeviceData[device.device_id]?.part_name || 'N/A'}} </p>
+        <p><strong>Production Count:</strong> {{ allDeviceData[device.device_id]?.current_count || 'N/A' }}</p>
+        <p><strong>Target Count:</strong> {{ allDeviceData[device.device_id]?.target || 'N/A' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Devices Found -->
+  <ng-template #noDevices>
+    <p>No devices found for this site. Add a new device to get started!</p>
+  </ng-template>
+
+  <!-- Add Device Form -->
+  <div *ngIf="isAddDeviceFormVisible" class="add-device-form">
+    <h3>Add New Device</h3>
+    <form (ngSubmit)="submitNewDevice()">
+      <label for="deviceName">Device Name:</label>
+      <input type="text" id="deviceName" [(ngModel)]="newDevice.device_name" name="deviceName" required />
+
+      <label for="deviceStatus">Device Status:</label>
+      <select id="deviceStatus" name="deviceStatus">
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+      </select>
+
+      <button type="submit" class="btn-submit">Add Device</button>
+    </form>
+  </div>
+</div>

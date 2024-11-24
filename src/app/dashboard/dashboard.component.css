@@ -1,0 +1,269 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #004d99;
+    color: #fff;
+  }
+  
+  .branding {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 50px;
+    margin-right: 10px;
+  }
+  
+  .company-name {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .auth-options .btn-login,
+  .auth-options .btn-logout {
+    padding: 8px 16px;
+    background-color: #008cff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .auth-options .btn-login:hover,
+  .auth-options .btn-logout:hover {
+    background-color: #0056b3;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .project-info h1 {
+    font-size: 32px;
+    color: #004d99;
+    margin-bottom: 10px;
+  }
+  
+  .project-info p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .features {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .feature-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-card img {
+    width: 60px;
+    margin-bottom: 10px;
+  }
+  
+  .feature-card h3 {
+    margin: 10px 0;
+    font-size: 20px;
+    color: #004d99;
+  }
+  
+  .feature-card p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .btn-get-started {
+    padding: 12px 24px;
+    background-color: #004d99;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-get-started:hover {
+    background-color: #003366;
+  }
+  
+  .dashboard {
+    text-align: center;
+  }
+  
+  .dashboard-cards {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #004d99;
+  }
+  
+  .card p {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .dashboard {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .add-site {
+    margin: 20px 0;
+  }
+  
+  .btn-add-site {
+    padding: 12px 24px;
+    background-color: #004d99;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-add-site:hover {
+    background-color: #003366;
+  }
+  
+  .sites-list {
+    margin-top: 20px;
+  }
+  
+  .site-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .site-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    width: 250px;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .site-card h4 {
+    font-size: 18px;
+    color: #004d99;
+    margin-bottom: 5px;
+  }
+  
+  .site-card p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .site-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn-view,
+  .btn-delete {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-view {
+    background-color: #008cff;
+    color: white;
+  }
+  
+  .btn-view:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-delete {
+    background-color: #ff5c5c;
+    color: white;
+  }
+  
+  .btn-delete:hover {
+    background-color: #cc0000;
+  }
+  
+  .add-site-form {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    text-align: left;
+  }
+  
+  .add-site-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .add-site-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .add-site-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-site-form .btn-primary {
+    background-color: #004d99;
+    color: #fff;
+  }
+  
+  .add-site-form .btn-primary:hover {
+    background-color: #003366;
+  }
+  
+  .add-site-form .btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    margin-left: 10px;
+  }
+  
+  .add-site-form .btn-secondary:hover {
+    background-color: #ddd;
+  }

@@ -1,0 +1,114 @@
+.login-frame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+  }
+  
+  .card {
+    width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-link {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .btn-link:hover {
+    text-decoration: underline;
+  }
+  
+  .gsi-material-button {
+    display: flex;
+    align-items: center; /* Vertically aligns icon and text */
+    padding: 8px 16px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    width: auto;
+  }
+  
+  .gsi-material-button:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .gsi-material-button:active {
+    background-color: #eee;
+  }
+  
+  .gsi-material-button-icon {
+    display: flex;
+    align-items: center; /* Ensures the SVG is vertically centered */
+    justify-content: center;
+    margin-right: 8px; /* Space between icon and text */
+    width: 20px;
+    height: 20px;
+  }
+  
+  .gsi-material-button-contents {
+    display: flex;
+    align-items: center; /* Vertically aligns text */
+    font-weight: bold;
+  }
+  
+  .gsi-material-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  h6 {
+    font-size: small;
+  }

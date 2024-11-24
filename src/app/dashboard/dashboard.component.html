@@ -1,0 +1,88 @@
+<div class="navbar">
+    <div class="branding">
+      <img src="assets/logo.png" alt="Company Logo" class="logo" />
+      <span class="company-name">Kalp Web Services (KWS)</span>
+    </div>
+    <div class="auth-options">
+      <button *ngIf="!isLoggedIn" class="btn-login" (click)="login()">Login</button>
+      <button *ngIf="isLoggedIn" class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </div>
+  
+  <div class="content">
+    <!-- Content for guests -->
+    <div *ngIf="!isLoggedIn" class="project-info">
+      <h1>Manage and Monitor Your IoT Devices with Ease</h1>
+      <p>
+        Kalp Web Services (KWS) offers a comprehensive platform to manage, monitor, and optimize your IoT devices effortlessly. Join us to experience a seamless IoT journey.
+      </p>
+  
+      <div class="features">
+        <div class="feature-card">
+          <img src="assets/device-management.png" alt="Device Management" />
+          <h3>Device Management</h3>
+          <p>Keep track of all your IoT devices in one place and manage their settings efficiently.</p>
+        </div>
+        <div class="feature-card">
+          <img src="assets/realtime-monitoring.png" alt="Real-Time Monitoring" />
+          <h3>Real-Time Monitoring</h3>
+          <p>Monitor the health, performance, and status of your devices in real-time.</p>
+        </div>
+        <div class="feature-card">
+          <img src="assets/data-analytics.png" alt="Data Analytics" />
+          <h3>Data Analytics</h3>
+          <p>Gain actionable insights through advanced analytics and improve decision-making.</p>
+        </div>
+      </div>
+      <button class="btn-get-started" (click)="login()">Get Started</button>
+    </div>
+  
+    <!-- Content for logged-in users -->
+    <div *ngIf="isLoggedIn" class="dashboard">
+        <h2>Welcome Back {{ username }}!</h2>
+        <p>Manage your sites and monitor IoT devices effortlessly.</p>
+      
+        <!-- Add New Site Button -->
+        <div class="add-site">
+          <button class="btn-add-site" (click)="showAddSiteForm()">+ Add New Site</button>
+        </div>
+      
+        <!-- Add Site Form (Hidden initially) -->
+        <div *ngIf="isAddSiteFormVisible" class="add-site-form">
+          <h3>Add New Site</h3>
+          <form (ngSubmit)="submitNewSite()">
+            <div class="form-group">
+              <label for="siteName">Site Name</label>
+              <input type="text" id="siteName" [(ngModel)]="newSite.name" name="siteName" required placeholder="Enter site name" class="form-control" />
+            </div>
+      
+            <div class="form-group">
+              <label for="siteLocation">Location</label>
+              <input type="text" id="siteLocation" [(ngModel)]="newSite.location" name="siteLocation" required placeholder="Enter site location" class="form-control" />
+            </div>
+      
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Create Site</button>
+              <button type="button" class="btn btn-secondary" (click)="cancelAddSite()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      
+        <!-- List of Sites -->
+        <div class="sites-list" *ngIf="!isAddSiteFormVisible">
+          <h3>Your Sites</h3>
+          <div *ngIf="sites && sites.length > 0; else noSites" class="site-cards">
+            <div *ngFor="let site of sites" class="site-card">
+              <h4>{{ site.name }}</h4>
+              <p>{{ site.location }}</p>
+              <div class="site-actions">
+                <button class="btn-view" (click)="viewSite(site.id)">View Site</button>
+                <button class="btn-delete" (click)="deleteSite(site.id)">Delete</button>
+              </div>
+            </div>
+          </div>
+          <ng-template #noSites>
+            <p>No sites available. Click "Add New Site" to get started.</p>
+          </ng-template>
+        </div>
+      </div>
