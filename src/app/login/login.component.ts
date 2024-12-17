@@ -42,6 +42,10 @@ export class LoginComponent {
   }
 
   onSignIn() {
-    console.log('Signup');
+    console.log('Continue with google');
+  }
+
+  onSingUp() {
+    this.router.navigate(['/signup']);
   }
 }
