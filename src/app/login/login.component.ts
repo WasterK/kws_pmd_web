@@ -19,25 +19,27 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    if (this.username !== "DemoUser" && this.password !== "Demo@123") {
-      this.loading = true; // Start loading spinner
+    if (this.username !== "DemoUser") {
+      this.loading = true; 
       this.authService.login(this.username, this.password).subscribe(
         (response) => {
           this.authService.accessToken = response.token;
           this.authService.isLoggedIn = true;
-          this.loading = false; // Stop loading spinner
-          this.router.navigate(['/dashboard']); // Navigate to dashboard
+          this.loading = false;
+          this.router.navigate(['/dashboard']); 
         },
         (error) => {
-          console.error('Login failed:', error);
-          this.loading = false; // Stop loading spinner
-          alert('Invalid credentials');
+          if (error.status === 401) {
+            console.error('Login failed:', error);
+            this.loading = false;
+            alert(error.error.message);
+          }
         }
       );
     } else {
         this.authService.isLoggedIn = true;
-        this.loading = false; // Stop loading spinner
-        this.router.navigate(['/dashboard']); // Navigate to dashboard
+        this.loading = false; 
+        this.router.navigate(['/dashboard']); 
     }
   }
 

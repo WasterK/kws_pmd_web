@@ -73,6 +73,8 @@ export class SignupComponent {
         this.employee_id = '';
         this.mobile_number = null;
         this.loading = false;
+        alert('Signup successful. Please log in.');
+        this.router.navigate(['/login']);
       },
       (error) => {
         console.error(error);

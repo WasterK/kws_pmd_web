@@ -1,24 +1,21 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { SiteService } from '../services/site.service';
 import { DeviceService } from '../services/device.service';
 
 @Component({
-  selector: 'app-view-site',
+  selector: 'app-manage-device',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './view-site.component.html',
-  styleUrls: ['./view-site.component.css']
+  imports: [],
+  templateUrl: './manage-device.component.html',
+  styleUrl: './manage-device.component.css'
 })
-export class ViewSiteComponent {
+export class ManageDeviceComponent {
   siteId: number | null = null; // Current site ID
   siteDetails: any = {}; // Site details
   devices: any[] = []; // List of devices
   allDeviceData: any = {}; // Device data
   isAddDeviceFormVisible = false; // Controls the form visibility
-
 
   newDevice = {
     device_name: '',
@@ -63,7 +60,6 @@ export class ViewSiteComponent {
             }
           );
         }
-        // console.log(this.allDeviceData);
       },
       (error) => {
         console.error('Error fetching devices:', error);
@@ -71,34 +67,13 @@ export class ViewSiteComponent {
     );
   }
 
+  refreshData() {
+    setInterval(() => {
+      this.fetchDevices();
+    }, 10000);
+  }
 
   toggleAddDeviceForm() {
     this.isAddDeviceFormVisible = !this.isAddDeviceFormVisible;
   }
-
-  submitNewDevice() {
-    if (!this.siteId) return;
-
-    this.siteService.addDeviceToSite(this.siteId, this.newDevice).subscribe(
-      (response: any) => {
-        this.devices.push(response);
-        this.toggleAddDeviceForm();
-        this.resetNewDeviceForm();
-      },
-      (error) => {
-        console.error('Error adding device:', error);
-      }
-    );
-  }
-
-  resetNewDeviceForm() {
-    this.newDevice = { device_name: '', device_url: '' };
-  }
-
-  //refresh device data every 5 seconds
-  refreshData() {
-    setInterval(() => {
-      this.fetchDevices();
-    }, 5000);
-  } 
 }
