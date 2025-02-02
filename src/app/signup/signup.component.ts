@@ -20,6 +20,7 @@ export class SignupComponent {
   last_name: string = '';
   created_by: string = 'self';
   employee_id: string = '';
+  date_of_birth: Date = new Date();
   mobile_number: number | null = 0;
   loading: boolean = false;
 
@@ -35,9 +36,7 @@ export class SignupComponent {
       !this.email ||
       !this.first_name ||
       !this.last_name ||
-      !this.created_by ||
-      !this.employee_id ||
-      !this.mobile_number
+      !this.created_by 
     ) {
       alert('Please fill out all fields.');
       return;
@@ -57,12 +56,16 @@ export class SignupComponent {
       email: this.email,
       first_name: this.first_name,
       last_name: this.last_name,
+      // date format: YYYY-MM-DD  
+      date_of_birth: this.date_of_birth.toISOString().split('T')[0],
+      phone_number: this.mobile_number,
       created_by: this.created_by,
       employee_id: this.employee_id,
       mobile_number: this.mobile_number,
     }).subscribe(
       (response: any) => {
         console.log(response);
+        this.router.navigate(['/login']);
         // Reset form
         this.user_name = '';
         this.password = '';
@@ -79,9 +82,12 @@ export class SignupComponent {
         if (error.status == 409) {
           this.loading = false;
           alert(error.error.message);
-        } else {
-          alert('Signup failed. Please try again later.');
+        } else if (error.status == 400) {
           this.loading = false;
+          alert(`Signup failed. ${error.error.message}`);
+        } else {
+          this.loading = false;
+          alert('Signup failed. Please try again later.');
         }
       });
   }

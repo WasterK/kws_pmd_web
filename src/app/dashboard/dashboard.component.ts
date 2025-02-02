@@ -15,7 +15,6 @@ import { SiteService } from '../services/site.service';
 })
 export class DashboardComponent {
   
-  isLoggedIn = false; 
   username = ''; 
   isAddSiteFormVisible = false; 
 
@@ -23,22 +22,18 @@ export class DashboardComponent {
 
   newSite = {
     name: '',
-    location: ''
+    location: '',
+    status: 'active'
   };
 
   constructor(
-    private authService: AuthService, 
+    public authService: AuthService, 
     private router: Router,
     private siteService: SiteService 
   ) {}
 
   ngOnInit() {
-    
-    this.isLoggedIn = this.authService.getLoginStatus();
-    if (this.isLoggedIn) {
-      
-    }
-    this.loadSites();  
+    this.checkTokenValidity();
   }
 
   login() {
@@ -46,9 +41,14 @@ export class DashboardComponent {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']); 
-    this.isLoggedIn = false;
+    this.authService.logout().subscribe( 
+      () => {
+        this.authService.isLoggedIn = false;
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        console.error('Error logging out:', error); 
+      });
   }
 
   showAddSiteForm() {
@@ -63,14 +63,14 @@ export class DashboardComponent {
 
 
   resetNewSiteForm() {
-    this.newSite = { name: '', location: '' };
+    this.newSite = { name: '', location: '', status: 'active'};
   }
 
 
   submitNewSite() {
     this.siteService.addSite(this.newSite).subscribe(
       (response) => {
-        this.sites.push(response); 
+        this.sites.push({name: this.newSite.name, location: this.newSite.location}); 
         this.cancelAddSite();
       },
       (error) => {
@@ -96,11 +96,33 @@ export class DashboardComponent {
     this.router.navigate([`/view-site/${siteId}`]);  
   }
 
+  checkTokenValidity() {
+    this.authService.getTokenExpirationDate().subscribe(
+      (response) => {
+        let errorMsg = response[0]
+        let status = response[1]
+        if (status === 200) {
+          this.authService.isLoggedIn = true;
+          this.loadSites()
+        } else if (status === 401) {
+          this.authService.isLoggedIn = false;
+        }
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        if (error.status === 401 && error.error?.error === 'token_expired') {
+          console.error('Token expired. Logging out...');
+          this.router.navigate(['/login']);
+        } else {
+          console.error('Error checking token validity:', error);
+        }
+      });
+    }
 
   deleteSite(siteId: number) {
     this.siteService.deleteSite(siteId).subscribe(
-      () => {
-        this.sites = this.sites.filter((site) => site.id !== siteId);
+      (response) => {
+        this.sites = this.sites.filter((site) => site.site_id !== siteId);
         console.log('Deleted site:', siteId);
       },
       (error) => {

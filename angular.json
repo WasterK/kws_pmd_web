@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "kws_pmd_web": {
+    "pmd_client": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/kws_pmd_web",
+            "outputPath": "dist/pmd_client",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -67,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "kws_pmd_web:build:production"
+              "buildTarget": "pmd_client:build:production"
             },
             "development": {
-              "buildTarget": "kws_pmd_web:build:development"
+              "buildTarget": "pmd_client:build:development"
             }
           },
           "defaultConfiguration": "development"

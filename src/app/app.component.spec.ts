@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'kws_pmd_web' title`, () => {
+  it(`should have the 'pmd_client' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('kws_pmd_web');
+    expect(app.title).toEqual('pmd_client');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, kws_pmd_web');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, pmd_client');
   });
 });
