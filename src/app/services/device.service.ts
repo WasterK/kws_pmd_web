@@ -12,7 +12,19 @@ export class DeviceService {
 
   constructor(private http: HttpClient) { }
 
+  addNewDevice(device_name: string, device_url: string, site_id: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/device/${site_id}`, {"device_name": device_name, "device_url": device_url, "site_id": site_id}, {withCredentials: true})
+  }
+
   getDeviceData(siteId: number, device_id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/device/${siteId}/${device_id}`);
+    return this.http.get(`${this.apiUrl}/stream-device-data/${device_id}`);
+  }
+
+  setDeviceTarget(device_id: number, location_id: number, new_targets: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/device-config/${device_id}`, 
+    {
+      "location_id": location_id,
+      "new_targets": new_targets
+    })
   }
 }

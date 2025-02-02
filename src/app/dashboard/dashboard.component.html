@@ -4,14 +4,14 @@
       <span class="company-name">Kalp Web Services (KWS)</span>
     </div>
     <div class="auth-options">
-      <button *ngIf="!isLoggedIn" class="btn-login" (click)="login()">Login</button>
-      <button *ngIf="isLoggedIn" class="btn-logout" (click)="logout()">Logout</button>
+      <button *ngIf="!this.authService.isLoggedIn" class="btn-login" (click)="login()">Login</button>
+      <button *ngIf="this.authService.isLoggedIn" class="btn-logout" (click)="logout()">Logout</button>
     </div>
   </div>
   
   <div class="content">
     <!-- Content for guests -->
-    <div *ngIf="!isLoggedIn" class="project-info">
+    <div *ngIf="!this.authService.isLoggedIn" class="project-info">
       <h1>Manage and Monitor Your IoT Devices with Ease</h1>
       <p>
         Kalp Web Services (KWS) offers a comprehensive platform to manage, monitor, and optimize your IoT devices effortlessly. Join us to experience a seamless IoT journey.
@@ -38,7 +38,7 @@
     </div>
   
     <!-- Content for logged-in users -->
-    <div *ngIf="isLoggedIn" class="dashboard">
+    <div *ngIf="this.authService.isLoggedIn" class="dashboard">
         <h2>Welcome Back {{ username }}!</h2>
         <p>Manage your sites and monitor IoT devices effortlessly.</p>
       
@@ -76,8 +76,8 @@
               <h4>{{ site.name }}</h4>
               <p>{{ site.location }}</p>
               <div class="site-actions">
-                <button class="btn-view" (click)="viewSite(site.id)">View Site</button>
-                <button class="btn-delete" (click)="deleteSite(site.id)">Delete</button>
+                <button class="btn-view" (click)="viewSite(site.site_id)">View Site</button>
+                <button class="btn-delete" (click)="deleteSite(site.site_id)">Delete</button>
               </div>
             </div>
           </div>

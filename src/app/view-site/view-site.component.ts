@@ -4,6 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SiteService } from '../services/site.service';
 import { DeviceService } from '../services/device.service';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadDataComponent } from './upload-data/upload-data.component';
+
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-view-site',
@@ -25,7 +31,14 @@ export class ViewSiteComponent {
     device_url: ''
   }; // New device data
 
-  constructor(private deviceService: DeviceService, private route: ActivatedRoute, private siteService: SiteService) {}
+  constructor(
+    private authService: AuthService,
+    private deviceService: DeviceService, 
+    private route: ActivatedRoute, 
+    private siteService: SiteService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -33,10 +46,30 @@ export class ViewSiteComponent {
       if (this.siteId) {
         this.fetchSiteDetails();
         this.fetchDevices();
+        this.refreshData();
       }
     });
   }
 
+  onAddNewDevice() {
+    this.deviceService.addNewDevice(this.newDevice.device_name, this.newDevice.device_url, this.siteId!).subscribe(
+      (response) => {
+        console.log('Device added successfully:', response);
+        this.devices.push(response); 
+        this.allDeviceData[response.device_id] = {}; 
+        this.toggleAddDeviceForm();
+        this.resetNewDeviceForm();
+      },
+      (error) => {
+        if (error.status === 401) {
+          this.authService.isLoggedIn = false;
+        }
+        this.router.navigate(['/dashboard']);
+      }
+    );
+  }
+  
+  
   fetchSiteDetails() {
     this.siteService.getSiteById(this.siteId!).subscribe(
       (response: any) => {
@@ -51,25 +84,34 @@ export class ViewSiteComponent {
   fetchDevices() {
     this.siteService.getDevicesBySiteId(this.siteId!).subscribe(
       (response: any) => {
-        this.devices = response.devices;
+        this.devices = response[0].devices;
         for (let device of this.devices) {
           this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
             (response: any) => {
               this.allDeviceData[device.device_id] = response;
+              device.status = "online"
             },
             (error) => {
-              console.error('Error fetching device data:', error);
+              if (error.status === 500) {
+                  device.status = "offline"
+              }
+              // console.error('Error fetching device data:', error);
             }
           );
         }
         // console.log(this.allDeviceData);
       },
       (error) => {
-        console.error('Error fetching devices:', error);
+        if (error.status === 401) {
+          this.authService.tokenRefresh().subscribe(
+            (response) => {
+              
+            }
+          );
+        }
       }
     );
   }
-
 
   toggleAddDeviceForm() {
     this.isAddDeviceFormVisible = !this.isAddDeviceFormVisible;
@@ -92,5 +134,46 @@ export class ViewSiteComponent {
 
   resetNewDeviceForm() {
     this.newDevice = { device_name: '', device_url: '' };
+  }
+
+  //refresh device data every 5 seconds
+  refreshData() {
+    setInterval(() => {
+      for (let device of this.devices) {
+        this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
+          (response: any) => {
+            this.allDeviceData[device.device_id] = response;
+            device.status = "online"; 
+          },
+          (error) => {
+            if (error.status === 500) {
+              device.status = "offline";
+            }
+          }
+        );
+      }
+    }, 2000);
+  }
+  
+
+  openUploadDialog(device_id: number, location_id: number, current_target: number) {
+    const dialogRef = this.dialog.open(UploadDataComponent, {
+      width: '400px',
+      data: {current_target} // Pass empty or predefined data here
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Uploaded Data:', result);
+        this.deviceService.setDeviceTarget(device_id, location_id, result.new_targets).subscribe(
+          (response) => {
+            this.refreshData()
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
+      }
+    });
   }
 }

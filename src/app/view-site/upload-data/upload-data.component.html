@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Upload Data</h2>
+<form [formGroup]="uploadForm" (ngSubmit)="submitForm()" class="upload-form">
+
+  <mat-form-field appearance="outline">
+    <mat-label>New Targets</mat-label>
+    <input matInput type="number" formControlName="new_targets" required />
+  </mat-form-field>
+
+  <div class="button-group">
+    <button mat-button (click)="closeDialog()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </div>
+</form>

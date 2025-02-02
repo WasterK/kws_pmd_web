@@ -1,0 +1,66 @@
+/* Container for the upload form */
+.upload-form {
+    background-color: #ffffff; /* White background */
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 20px auto; /* Center the form horizontally */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    color: #333; /* Dark text for contrast */
+  }
+  
+  /* Dialog title styling */
+  h2[mat-dialog-title] {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Angular Material form field */
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  /* Ensure input text color is legible */
+  mat-form-field input {
+    color: #333;
+  }
+  
+  /* Button group container */
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Cancel button styling */
+  button[mat-button] {
+    background-color: #e0e0e0; /* Light grey background */
+    color: #333; /* Dark text */
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* Cancel button hover state */
+  button[mat-button]:hover {
+    background-color: #d5d5d5;
+  }
+  
+  /* Submit button styling */
+  button[mat-raised-button] {
+    background-color: #1976d2; /* Simple blue */
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  /* Submit button hover state */
+  button[mat-raised-button]:hover {
+    background-color: #1565c0;
+  }
+  
