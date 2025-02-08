@@ -54,8 +54,11 @@ export class ViewSiteComponent {
   onAddNewDevice() {
     this.deviceService.addNewDevice(this.newDevice.device_name, this.newDevice.device_url, this.siteId!).subscribe(
       (response) => {
-        // Handle the success response
         console.log('Device added successfully:', response);
+        this.devices.push(response); 
+        this.allDeviceData[response.device_id] = {}; 
+        this.toggleAddDeviceForm();
+        this.resetNewDeviceForm();
       },
       (error) => {
         if (error.status === 401) {
@@ -65,6 +68,7 @@ export class ViewSiteComponent {
       }
     );
   }
+  
   
   fetchSiteDetails() {
     this.siteService.getSiteById(this.siteId!).subscribe(
@@ -101,7 +105,7 @@ export class ViewSiteComponent {
         if (error.status === 401) {
           this.authService.tokenRefresh().subscribe(
             (response) => {
-              window.location.reload();
+              
             }
           );
         }
@@ -135,9 +139,22 @@ export class ViewSiteComponent {
   //refresh device data every 5 seconds
   refreshData() {
     setInterval(() => {
-      this.fetchDevices();
+      for (let device of this.devices) {
+        this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
+          (response: any) => {
+            this.allDeviceData[device.device_id] = response;
+            device.status = "online"; 
+          },
+          (error) => {
+            if (error.status === 500) {
+              device.status = "offline";
+            }
+          }
+        );
+      }
     }, 2000);
   }
+  
 
   openUploadDialog(device_id: number, location_id: number, current_target: number) {
     const dialogRef = this.dialog.open(UploadDataComponent, {
@@ -150,7 +167,7 @@ export class ViewSiteComponent {
         console.log('Uploaded Data:', result);
         this.deviceService.setDeviceTarget(device_id, location_id, result.new_targets).subscribe(
           (response) => {
-            window.location.reload()
+            this.refreshData()
           },
           (error) => {
             console.log(error)
