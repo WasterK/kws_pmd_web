@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -26,5 +26,13 @@ export class DeviceService {
       "location_id": location_id,
       "new_targets": new_targets
     })
+  }
+
+  downloadDeviceLogs(device_id: number, format: string = 'csv'): Observable<Blob> {
+    const params = new HttpParams().set('format', format);
+    return this.http.get(`${this.apiUrl}/device/download-device-logs/${device_id}`, {
+      params,
+      responseType: 'blob'  // Ensure the response is treated as a Blob
+    });
   }
 }

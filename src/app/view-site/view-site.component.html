@@ -2,27 +2,71 @@
   <div class="header">
     <p class="view-site-title">Production Monitoring Display</p>
     <h4 class="site-name">{{ siteDetails.name }}</h4>
-    <button class="btn-add-device" (click)="toggleAddDeviceForm()">
-      {{ isAddDeviceFormVisible ? 'Cancel' : '+ Add New Device' }}
-    </button>
-  </div>
 
-  <!-- Devices Grid -->
-  <div *ngIf="devices.length > 0; else noDevices" class="device-grid">
-    <div class="device-card" (click)="openUploadDialog(device.device_id, allDeviceData[device.device_id]['location_id'], allDeviceData[device.device_id]?.target)" *ngFor="let device of devices">
-      <div class="device-header">
-        <h3>{{ device.device_name }}</h3>
-        <span class="status-indicator" [class.online]="device.status === 'online'" [class.offline]="device.status === 'offline'">
-          {{ device.status }}
-        </span>
-      </div>
-      <div class="device-info">
-        <p><strong>Current Part:</strong> {{allDeviceData[device.device_id]?.part_name || 'N/A'}} </p>
-        <p><strong>Production Count:</strong> {{ allDeviceData[device.device_id]?.current_count || 'N/A' }}</p>
-        <p><strong>Target Count:</strong> {{ allDeviceData[device.device_id]?.target || 'N/A' }}</p>
-      </div>
+    <div class="top-right-buttons">
+      <button class="btn-analytics" (click)="toggleAnalyticsView()">
+        {{ isAnalyticsView ? 'Back to Devices' : 'Cumulative Show Analytics' }}
+      </button>
     </div>
   </div>
+  
+  <button class="btn-add-device" *ngIf="!isAnalyticsView" (click)="toggleAddDeviceForm()">
+    {{ isAddDeviceFormVisible ? 'Cancel' : '+ Add New Device' }}
+  </button>
+
+
+  <!-- Cumulative Analytics View -->
+  <div *ngIf="isAnalyticsView" class="analytics-container">
+    <h3>Cumulative Production Analytics - {{ todayDate }}</h3>
+    <table>
+      <tr>
+        <th>Part Name</th>
+        <th>Daily Target</th>
+        <th>Daily Achieved</th>
+        <th>Weekly Target</th>
+        <th>Weekly Achieved</th>
+        <th>Monthly Target</th>
+        <th>Monthly Achieved</th>
+      </tr>
+      <tr *ngFor="let data of analyticsData">
+        <td>{{ data.part_name }}</td>
+        <td>{{ data.daily_achieved }}</td>
+        <td>{{ data.daily_target }}</td>
+        <td>{{ data.weekly_achieved }}</td>
+        <td>{{ data.weekly_target }}</td>
+        <td>{{ data.monthly_achieved }}</td>
+        <td>{{ data.monthly_target }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Device Grid View -->
+  <div *ngIf="!isAnalyticsView">
+    <div *ngIf="devices.length > 0; else noDevices" class="device-grid">
+      <div class="device-card" *ngFor="let device of devices">
+        <div class="device-header">
+          <h3>{{ device.device_name }}</h3>
+          <span class="status-indicator" [class.online]="device.status === 'online'" [class.offline]="device.status === 'offline'">
+            {{ device.status }}
+          </span>
+
+          <!-- Dropdown Menu -->
+          <div class="dropdown">
+            <button class="dropdown-toggle" (click)="toggleDropdown(device.device_id, device.status, $event)">Options</button>
+            <div *ngIf="dropdownOpen[device.device_id]" class="dropdown-menu">
+              <button (click)="downloadLogs(device.device_id, $event)">Download Logs</button>
+              <button (click)="openUploadDialog(device.device_id, allDeviceData[device.device_id]['location_id'], allDeviceData[device.device_id]?.target)">Update Targets</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="device-info">
+          <p><strong>Current Part:</strong> {{ allDeviceData[device.device_id]?.part_name || 'N/A' }} </p>
+          <p><strong>Production Count:</strong> {{ allDeviceData[device.device_id]?.current_count || 'N/A' }}</p>
+          <p><strong>Target Count:</strong> {{ allDeviceData[device.device_id]?.target || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
 
   <!-- No Devices Found -->
   <ng-template #noDevices>

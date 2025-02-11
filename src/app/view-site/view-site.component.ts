@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadDataComponent } from './upload-data/upload-data.component';
 
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-site',
@@ -24,7 +25,10 @@ export class ViewSiteComponent {
   devices: any[] = []; // List of devices
   allDeviceData: any = {}; // Device data
   isAddDeviceFormVisible = false; // Controls the form visibility
-
+  dropdownOpen: { [key: number]: boolean } = {};
+  isAnalyticsView = localStorage.getItem('isAnalyticsView') === 'true';
+  analyticsData: any[] = [];
+  todayDate: string = new Date().toLocaleDateString();
 
   newDevice = {
     device_name: '',
@@ -49,6 +53,94 @@ export class ViewSiteComponent {
         this.refreshData();
       }
     });
+  }
+
+  toggleAnalyticsView() {
+    this.isAnalyticsView = !this.isAnalyticsView;
+    localStorage.setItem('isAnalyticsView', String(this.isAnalyticsView)); // Stores the correct toggled value
+  
+    if (this.isAnalyticsView) {
+      this.showCumulativeAnalytics();
+    }
+  }
+  
+
+  showCumulativeAnalytics() {
+    const aggregatedData: { [key: string]: any } = {};
+
+    this.devices.forEach(device => {
+      const data = this.allDeviceData[device.device_id] || {};
+      const partName = data.part_name || 'N/A';
+
+      if (!aggregatedData[partName]) {
+        aggregatedData[partName] = {
+          part_name: partName,
+          daily_target: 0,
+          daily_achieved: 0,
+          weekly_target: 0,
+          weekly_achieved: 0,
+          monthly_target: 0,
+          monthly_achieved: 0
+        };
+      }
+
+      aggregatedData[partName].daily_target += data.target || 0;
+      aggregatedData[partName].daily_achieved += data.current_count || 0;
+      aggregatedData[partName].weekly_target += data.weekly_target || 0;
+      aggregatedData[partName].weekly_achieved += data.weekly_achieved || 0;
+      aggregatedData[partName].monthly_target += data.monthly_target || 0;
+      aggregatedData[partName].monthly_achieved += data.monthly_achieved || 0;
+    });
+
+    this.analyticsData = Object.values(aggregatedData);
+  }
+
+  toggleDropdown(deviceId: number, status: string, event: Event): void {
+    event.stopPropagation(); // Prevents event bubbling
+    if (status === 'online') {
+      Object.keys(this.dropdownOpen).forEach(key => {
+        this.dropdownOpen[+key] = false;
+      });
+      this.dropdownOpen[deviceId] = !this.dropdownOpen[deviceId];
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeDropdown(event: Event): void {
+    Object.keys(this.dropdownOpen).forEach(key => {
+      this.dropdownOpen[+key] = false;
+    });
+  }
+
+  downloadLogs(deviceId: number, event: Event, format: string = 'csv'): void {
+    event.stopPropagation();
+  
+    // Find the device by ID
+    const device = this.devices.find(d => d.device_id === deviceId);
+    const deviceName = device ? device.device_name : `device_${deviceId}`; // Fallback in case device is not found
+  
+    this.deviceService.downloadDeviceLogs(deviceId, format).subscribe(
+      (response) => {
+        const blob = new Blob([response], { type: response.type });
+        const downloadURL = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadURL;
+        a.download = `${deviceName}_logs_${deviceId}.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(downloadURL);
+      },
+      (error) => {
+        console.error('Download failed:', error);
+      }
+    );
+  }
+
+  changeCurrentPart(deviceId: number, event: Event): void {
+    event.stopPropagation();
+    console.log(`Changing current part for device ${deviceId}`);
+    // Implement part change logic here
   }
 
   onAddNewDevice() {
@@ -85,33 +177,45 @@ export class ViewSiteComponent {
     this.siteService.getDevicesBySiteId(this.siteId!).subscribe(
       (response: any) => {
         this.devices = response[0].devices;
-        for (let device of this.devices) {
-          this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
-            (response: any) => {
-              this.allDeviceData[device.device_id] = response;
-              device.status = "online"
-            },
-            (error) => {
-              if (error.status === 500) {
-                  device.status = "offline"
-              }
-              // console.error('Error fetching device data:', error);
-            }
-          );
+        
+        // If there are no devices, update analytics immediately
+        if (this.devices.length === 0) {
+          this.showCumulativeAnalytics();
+          return;
         }
-        // console.log(this.allDeviceData);
+  
+        const deviceDataObservables = this.devices.map(device => 
+          this.deviceService.getDeviceData(this.siteId!, device.device_id).pipe(
+            // Store device data or mark as offline in case of error
+            tap((data: any) => {
+              this.allDeviceData[device.device_id] = data;
+              device.status = "online";
+            }),
+            catchError(() => {
+              device.status = "offline";
+              return of(null); // Continue even if a device fails
+            })
+          )
+        );
+  
+        // Wait for all device data requests to complete
+        forkJoin(deviceDataObservables).subscribe(
+          () => {
+            this.showCumulativeAnalytics(); // Now call the analytics function
+          },
+          (error) => {
+            console.error('Error fetching device data:', error);
+          }
+        );
       },
       (error) => {
         if (error.status === 401) {
-          this.authService.tokenRefresh().subscribe(
-            (response) => {
-              
-            }
-          );
+          this.authService.tokenRefresh().subscribe();
         }
       }
     );
   }
+  
 
   toggleAddDeviceForm() {
     this.isAddDeviceFormVisible = !this.isAddDeviceFormVisible;
@@ -143,6 +247,7 @@ export class ViewSiteComponent {
         this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
           (response: any) => {
             this.allDeviceData[device.device_id] = response;
+            this.showCumulativeAnalytics();
             device.status = "online"; 
           },
           (error) => {
@@ -152,7 +257,7 @@ export class ViewSiteComponent {
           }
         );
       }
-    }, 2000);
+    }, 500);
   }
   
 
