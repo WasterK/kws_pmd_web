@@ -257,7 +257,7 @@ export class ViewSiteComponent {
           }
         );
       }
-    }, 500);
+    }, 20000);
   }
   
 
