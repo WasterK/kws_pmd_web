@@ -1,66 +1,130 @@
 /* Container for the upload form */
 .upload-form {
-    background-color: #ffffff; /* White background */
-    border-radius: 8px;
-    padding: 20px;
-    max-width: 400px;
-    margin: 20px auto; /* Center the form horizontally */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    color: #333; /* Dark text for contrast */
+  background-color: #ffffff; /* White background */
+  border-radius: 12px; /* Rounded corners */
+  padding: 24px;
+  max-width: 600px;
+  margin: 24px auto; /* Center the form horizontally */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slightly more prominent shadow */
+  color: #333; /* Dark text for contrast */
+  font-family: 'Roboto', sans-serif; /* Material Design recommended font */
+  box-sizing: border-box;
+}
+
+/* Dialog title styling */
+h2[mat-dialog-title] {
+  font-size: 1.5rem; /* Responsive font size */
+  font-weight: 700; /* Slightly bolder for better visual hierarchy */
+  color: #1976d2; /* Use the primary blue for consistency */
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Angular Material form field */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Ensure input text color is legible */
+mat-form-field input {
+  color: #333;
+  font-size: 1rem;
+  padding: 8px;
+}
+
+/* Button group container */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px; /* Add spacing between buttons for better separation */
+  margin-top: 24px;
+}
+
+/* Cancel button styling */
+button[mat-button] {
+  background-color: #f5f5f5; /* Slightly lighter grey */
+  color: #333; /* Dark text */
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease-in-out;
+  border: 1px solid #ccc; /* Add a subtle border for better visibility */
+}
+
+/* Cancel button hover state */
+button[mat-button]:hover {
+  background-color: #e0e0e0;
+}
+
+/* Submit button styling */
+button[mat-raised-button] {
+  background-color: #1976d2; /* Primary blue color */
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Elevate the submit button */
+  transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Submit button hover state */
+button[mat-raised-button]:hover {
+  background-color: #1565c0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add a more prominent shadow */
+}
+
+/* Mat-list styling */
+mat-list {
+  background-color: #f9f9f9; /* Light background color for the list */
+  padding: 12px; /* Add padding around the list */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Mat-list-item styling */
+mat-list-item {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Hover effect for list items */
+mat-list-item:hover {
+  background-color: #e3f2fd; /* Light blue */
+  color: #1565c0;
+}
+
+/* Highlight the selected part */
+mat-list-item.selected {
+  background-color: #1976d2; /* Primary blue */
+  color: white;
+  font-weight: bold;
+}
+
+.dialog-outbox {
+  padding: 20px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  /* Dialog title styling */
-  h2[mat-dialog-title] {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  /* Angular Material form field */
-  mat-form-field {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-  
-  /* Ensure input text color is legible */
-  mat-form-field input {
-    color: #333;
-  }
-  
-  /* Button group container */
-  .button-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  /* Cancel button styling */
-  button[mat-button] {
-    background-color: #e0e0e0; /* Light grey background */
-    color: #333; /* Dark text */
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  /* Cancel button hover state */
-  button[mat-button]:hover {
-    background-color: #d5d5d5;
-  }
-  
-  /* Submit button styling */
-  button[mat-raised-button] {
-    background-color: #1976d2; /* Simple blue */
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  /* Submit button hover state */
-  button[mat-raised-button]:hover {
-    background-color: #1565c0;
-  }
-  
+}

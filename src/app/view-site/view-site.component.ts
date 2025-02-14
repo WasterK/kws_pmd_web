@@ -50,7 +50,7 @@ export class ViewSiteComponent {
       if (this.siteId) {
         this.fetchSiteDetails();
         this.fetchDevices();
-        this.refreshData();
+        this.refreshDataTimer();
       }
     });
   }
@@ -137,10 +137,15 @@ export class ViewSiteComponent {
     );
   }
 
-  changeCurrentPart(deviceId: number, event: Event): void {
-    event.stopPropagation();
-    console.log(`Changing current part for device ${deviceId}`);
-    // Implement part change logic here
+  changeCurrentPart(deviceId: number, location_id: number): void {
+    this.deviceService.setCurrentPart(deviceId, location_id).subscribe(
+      (response) => {
+        this.refreshData();
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
   }
 
   onAddNewDevice() {
@@ -240,44 +245,49 @@ export class ViewSiteComponent {
     this.newDevice = { device_name: '', device_url: '' };
   }
 
-  //refresh device data every 5 seconds
   refreshData() {
-    setInterval(() => {
-      for (let device of this.devices) {
-        this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
-          (response: any) => {
-            this.allDeviceData[device.device_id] = response;
-            this.showCumulativeAnalytics();
-            device.status = "online"; 
-          },
-          (error) => {
-            if (error.status === 500) {
-              device.status = "offline";
-            }
+    for (let device of this.devices) {
+      this.deviceService.getDeviceData(this.siteId!, device.device_id).subscribe(
+        (response: any) => {
+          this.allDeviceData[device.device_id] = response;
+          this.showCumulativeAnalytics();
+          device.status = "online"; 
+        },
+        (error) => {
+          if (error.status === 500) {
+            device.status = "offline";
           }
-        );
-      }
-    }, 20000);
+        }
+      );
+    }
+  }
+
+  //refresh device data every 5 seconds
+  refreshDataTimer() {
+    setInterval(() => this.refreshData(), 20000);
   }
   
-
-  openUploadDialog(device_id: number, location_id: number, current_target: number) {
+  openUploadDialog(device_id: number, location_id: number, current_target: number, isPartSelection: boolean, current_part: string) {
     const dialogRef = this.dialog.open(UploadDataComponent, {
       width: '400px',
-      data: {current_target} // Pass empty or predefined data here
+      data: {current_target, isPartSelection, device_id, current_part} // Pass empty or predefined data here
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Uploaded Data:', result);
-        this.deviceService.setDeviceTarget(device_id, location_id, result.new_targets).subscribe(
-          (response) => {
-            this.refreshData()
-          },
-          (error) => {
-            console.log(error)
-          }
-        )
+          // console.log('Uploaded Data:', result);
+        if (!result.isPartSelection) {
+          this.deviceService.setDeviceTarget(device_id, location_id, result.new_targets).subscribe(
+            (response) => {
+              this.refreshData();
+            },
+            (error) => {
+              console.log(error)
+            }
+          )
+        } else if (result.isPartSelection) {
+          this.changeCurrentPart(device_id, result.selectedPartLocation)
+        }
       }
     });
   }

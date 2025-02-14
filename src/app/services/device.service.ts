@@ -17,22 +17,37 @@ export class DeviceService {
   }
 
   getDeviceData(siteId: number, device_id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/stream-device-data/${device_id}`);
+    return this.http.get<any[]>(`${this.apiUrl}/${device_id}/stream-device-data`);
+  }
+
+  getDeviceParts(device_id: number) {
+    return this.http.get<Part[]>(`${this.apiUrl}/${device_id}/get-device-parts`)
+  }
+
+  setCurrentPart(device_id: number, location_id: number) {
+    return this.http.post(`${this.apiUrl}/${device_id}/device-config`, {"function_code": "set-last-used", "location_id": location_id});
   }
 
   setDeviceTarget(device_id: number, location_id: number, new_targets: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/device-config/${device_id}`, 
+    return this.http.post(`${this.apiUrl}/${device_id}/device-config`, 
     {
       "location_id": location_id,
-      "new_targets": new_targets
+      "new_targets": new_targets,
+      "function_code": "update-target"
     })
   }
 
   downloadDeviceLogs(device_id: number, format: string = 'csv'): Observable<Blob> {
     const params = new HttpParams().set('format', format);
-    return this.http.get(`${this.apiUrl}/device/download-device-logs/${device_id}`, {
+    return this.http.get(`${this.apiUrl}/${device_id}/download-device-logs`, {
       params,
       responseType: 'blob'  // Ensure the response is treated as a Blob
     });
   }
+
+}
+
+interface Part {
+  location_id: number;
+  part_name: string;
 }

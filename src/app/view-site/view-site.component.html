@@ -54,8 +54,9 @@
           <div class="dropdown">
             <button class="dropdown-toggle" (click)="toggleDropdown(device.device_id, device.status, $event)">Options</button>
             <div *ngIf="dropdownOpen[device.device_id]" class="dropdown-menu">
+              <button (click)="openUploadDialog(device.device_id, allDeviceData[device.device_id]['location_id'], allDeviceData[device.device_id]?.target, false, allDeviceData[device.device_id]?.part_name)">Update Targets</button>
+              <button (click)="openUploadDialog(device.device_id, device.part_name, allDeviceData[device.device_id]['location_id'], true, allDeviceData[device.device_id]?.part_name)">Change Part</button>
               <button (click)="downloadLogs(device.device_id, $event)">Download Logs</button>
-              <button (click)="openUploadDialog(device.device_id, allDeviceData[device.device_id]['location_id'], allDeviceData[device.device_id]?.target)">Update Targets</button>
             </div>
           </div>
         </div>
