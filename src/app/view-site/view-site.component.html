@@ -77,14 +77,14 @@
   <!-- Add Device Form -->
   <div *ngIf="isAddDeviceFormVisible" class="add-device-form">
     <h3>Add New Device</h3>
-    <form (ngSubmit)="submitNewDevice()">
+    <form (ngSubmit)="onAddNewDevice()">
       <label for="deviceName">Device Name:</label>
       <input type="text" id="deviceName" [(ngModel)]="newDevice.device_name" name="deviceName" required />
 
       <label for="deviceUrl">Device URL:</label>
       <input type="text" id="deviceUrl" [(ngModel)]="newDevice.device_url" name="deviceUrl" required>
 
-      <button type="submit" class="btn-submit" (click)="onAddNewDevice()" >Add Device</button>
+      <button type="submit" class="btn-submit">Add Device</button>
     </form>
   </div>
 </div>
