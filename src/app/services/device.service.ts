@@ -37,6 +37,14 @@ export class DeviceService {
     })
   }
 
+  uploadProductionPlan(device_id: number, production_plan: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${device_id}/production-plan`, production_plan)
+  }
+
+  getProductionPlan(device_id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${device_id}/production-plan`)
+  }
+
   downloadDeviceLogs(device_id: number, format: string = 'csv'): Observable<Blob> {
     const params = new HttpParams().set('format', format);
     return this.http.get(`${this.apiUrl}/${device_id}/download-device-logs`, {

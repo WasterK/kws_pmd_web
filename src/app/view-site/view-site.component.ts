@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadDataComponent } from './upload-data/upload-data.component';
+import { ProductionPlanComponent } from './production-plan/production-plan.component';
 
 import { forkJoin, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -288,6 +289,27 @@ export class ViewSiteComponent {
         } else if (result.isPartSelection) {
           this.changeCurrentPart(device_id, result.selectedPartLocation)
         }
+      }
+    });
+  }
+
+  openPPDialog(device_id: number) {
+    const dialogRef = this.dialog.open(ProductionPlanComponent, {
+      width: '400px',
+      data: {device_id} // Pass empty or predefined data here
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+          // console.log('Uploaded Data:', result);
+        this.deviceService.uploadProductionPlan(device_id, result.productionPlan).subscribe(
+          (response) => {
+            this.refreshData();
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
       }
     });
   }

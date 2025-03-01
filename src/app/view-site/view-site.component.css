@@ -295,3 +295,8 @@
 .analytics-container td {
   background: #141a25;
 }
+
+.pp-button {
+  display: flex;
+  justify-content: flex-end;
+}

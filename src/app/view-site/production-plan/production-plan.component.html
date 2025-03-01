@@ -1,0 +1,25 @@
+<div class="production-plan-container">
+    <!-- Available Parts -->
+    <div class="list-container">
+      <h3>Available Parts</h3>
+      <ul class="part-list">
+        <li *ngFor="let part of availableParts" (click)="addToPlan(part)" class="part-item">
+          {{ part }}
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Production Plan -->
+    <div class="list-container">
+      <h3>Production Plan</h3>
+      <ul class="part-list">
+        <li *ngFor="let part of productionPlan; let i = index" class="part-item">
+          {{ part }}
+          <button (click)="removeFromPlan(i)" class="remove-btn"></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <button (click)="savePlan()" class="save-btn">Save Plan</button>
+  

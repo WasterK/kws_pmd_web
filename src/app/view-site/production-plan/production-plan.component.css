@@ -1,0 +1,65 @@
+.production-plan-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .list-container {
+    width: 45%;
+  }
+  
+  .part-list {
+    list-style: none;
+    padding: 0;
+    border: 1px solid #ddd;
+    height: 200px; /* Fixed height */
+    overflow-y: auto; /* Scroll if too many items */
+    background: #f9f9f9;
+  }
+  
+  .part-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    background: #fff;
+    transition: background 0.3s;
+  }
+  
+  .part-item:hover {
+    background: #e0e0e0;
+  }
+  
+  /* Simple & Professional Remove Button */
+.remove-btn {
+    width: 15px;
+    height: 5px;
+    background-color: #d9534f; /* Bootstrap-like red */
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+/* Hover Effect */
+.remove-btn:hover {
+    background-color: #c9302c; /* Slightly darker red */
+    transform: scale(1.1);
+}
+
+/* Click Effect */
+.remove-btn:active {
+    background-color: #a52824;
+    transform: scale(0.95);
+}
+
+  
+  .save-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  

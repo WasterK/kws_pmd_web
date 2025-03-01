@@ -66,6 +66,10 @@
           <p><strong>Production Count:</strong> {{ allDeviceData[device.device_id]?.current_count || 'N/A' }}</p>
           <p><strong>Target Count:</strong> {{ allDeviceData[device.device_id]?.target || 'N/A' }}</p>
         </div>
+
+        <div class="pp-button">
+          <button (click)="openPPDialog(device.device_id)">PP</button>
+        </div>
       </div>
     </div>
 
