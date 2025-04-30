@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    apiUrl: "http://127.0.0.1:5000",
-    authUrl: "http://127.0.0.1:5000"
+    apiUrl: "https://kws-pmd-backend-jwt.onrender.com",
+    authUrl: "https://kws-pmd-backend-jwt.onrender.com"
   };
   

@@ -3,7 +3,7 @@
     <div class="list-container">
       <h3>Available Parts</h3>
       <ul class="part-list">
-        <li *ngFor="let part of availableParts" (click)="addToPlan(part)" class="part-item">
+        <li *ngFor="let part of availableParts" (click)="addToPlan({part_name:part, target:500})" class="part-item">
           {{ part }}
         </li>
       </ul>
@@ -14,12 +14,26 @@
       <h3>Production Plan</h3>
       <ul class="part-list">
         <li *ngFor="let part of productionPlan; let i = index" class="part-item">
-          {{ part }}
-          <button (click)="removeFromPlan(i)" class="remove-btn"></button>
+          <span class="part-name">{{ part.part_name }}</span>
+            <input id="qty-{{i}}" type="number" class="part-quatity" placeholder="Target Qty" [defaultValue]="part.target" />
+          <button (click)="removeFromPlan(i)" class="remove-btn">Remove</button>
         </li>
       </ul>
     </div>
   </div>
   
-  <button (click)="savePlan()" class="save-btn">Save Plan</button>
-  
+<div style="display: flex; flex-direction: row; align-items: center;">
+
+  <div  style="margin-top: auto" class="confirmation-message">
+    <p>
+      If you want to change the production plan,<br>
+      confirm it. <b> It will directly terminate the previous plan.</b>
+    </p>
+    
+    <input type="text" [(ngModel)]="confirmationText" placeholder='Type "confirm" here' />
+    
+  </div>
+  <button  (click)="savePlan()" class="save-btn"  [disabled] = "confirmationText.trim().toLowerCase() !== 'confirm' ">Upload Plan</button>
+
+
+</div>

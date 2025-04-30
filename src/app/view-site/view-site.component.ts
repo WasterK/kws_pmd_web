@@ -295,7 +295,9 @@ export class ViewSiteComponent {
 
   openPPDialog(device_id: number) {
     const dialogRef = this.dialog.open(ProductionPlanComponent, {
-      width: '400px',
+      width: '50vw',  // Takes up 90% of viewport width
+      maxWidth: '100vw',
+      height: '70vh', // Takes up 90% of viewport height
       data: {device_id} // Pass empty or predefined data here
     });
 

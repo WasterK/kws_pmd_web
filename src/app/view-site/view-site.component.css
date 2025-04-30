@@ -300,3 +300,75 @@
   display: flex;
   justify-content: flex-end;
 }
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .view-site-container {
+      padding: 20px;
+  }
+
+  .view-site-title {
+      font-size: 28px;
+  }
+
+  h4 {
+      font-size: 22px;
+  }
+
+  .device-grid {
+      grid-template-columns: 1fr; /* Single column for mobile */
+      gap: 20px;
+  }
+
+  .device-card {
+      padding: 15px;
+      font-size: 18px;
+  }
+
+  .device-header {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .device-header h3 {
+      font-size: 22px;
+      text-align: center;
+  }
+
+  .status-indicator {
+      font-size: 16px;
+      padding: 6px 12px;
+      margin: 10px;
+  }
+
+  .device-info p {
+      font-size: 16px;
+  }
+
+  .btn-add-device {
+      width: 100%;
+      font-size: 18px;
+      padding: 12px;
+  }
+
+  .top-right-buttons {
+      position: static;
+      justify-content: center;
+      margin-bottom: 10px;
+  }
+
+  .btn-analytics {
+      font-size: 14px;
+      padding: 8px 12px;
+  }
+
+  .dropdown-menu {
+      width: 100%;
+  }
+
+  .dropdown-menu button {
+      font-size: 14px;
+      padding: 8px;
+  }
+}
