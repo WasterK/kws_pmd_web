@@ -44,10 +44,10 @@ export class DeviceService {
   getProductionPlan(device_id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${device_id}/production-plan`)
   }
-
-  downloadDeviceLogs(device_id: number, format: string = 'csv'): Observable<Blob> {
+   
+  downloadDeviceLogs(device_id: number, format: string = 'csv', days: number = 30): Observable<Blob> {
     const params = new HttpParams().set('format', format);
-    return this.http.get(`${this.apiUrl}/${device_id}/download-device-logs`, {
+    return this.http.get(`${this.apiUrl}/${device_id}/download-device-logs?days=${days}`, {
       params,
       responseType: 'blob'  // Ensure the response is treated as a Blob
     });

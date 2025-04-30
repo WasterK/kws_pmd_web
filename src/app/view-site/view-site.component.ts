@@ -119,8 +119,10 @@ export class ViewSiteComponent {
     // Find the device by ID
     const device = this.devices.find(d => d.device_id === deviceId);
     const deviceName = device ? device.device_name : `device_${deviceId}`; // Fallback in case device is not found
-  
-    this.deviceService.downloadDeviceLogs(deviceId, format).subscribe(
+    
+    const days = Number(prompt("Enter the number of days to fetch logs for (default is 30):", "30"));
+
+    this.deviceService.downloadDeviceLogs(deviceId, format, days).subscribe(
       (response) => {
         const blob = new Blob([response], { type: response.type });
         const downloadURL = window.URL.createObjectURL(blob);
